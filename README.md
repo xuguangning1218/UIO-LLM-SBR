@@ -4,11 +4,17 @@ Official source code for paper I Got You: The User Intention Oriented Session-Ba
 
 ### Environment Setting
 ```
-pytorch==1.12.0
-numpy==1.20.3
-tqdm==4.61.2
-torchvision==0.13.0
+conda create -n sbr python=3.10 & conda activate sbr
+pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+pip install tqdm seaborn matplotlib scipy
 ```  
+For HearInt
+```
+conda create -n herint python=3.10 & conda activate herint
+pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+conda install -c conda-forge faiss-gpu
+pip install tqdm "numpy<2"
+```
 
 ###  Source Files Description
 
