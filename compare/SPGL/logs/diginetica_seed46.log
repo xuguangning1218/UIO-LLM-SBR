@@ -1,0 +1,154 @@
+Namespace(dataset='diginetica', epoch=15, batchSize=100, embSize=100, l2=1e-05, lr=0.001, layer=5, temperature=0.1, item_cl_loss_weight=1, sampled_item_size=35000, top_k=50, hoplimit=3, seed=46)
+-------------------------------------------------------
+epoch:  0
+start training:  2026-02-04 04:10:14.816722
+	Loss:	42314.104
+start predicting:  2026-02-04 04:36:47.329993
+{'hit5': np.float64(28.48932676518883), 'mrr5': np.float64(16.125041050903118), 'hit10': np.float64(39.90311986863711), 'mrr10': np.float64(17.63775379883754), 'hit20': np.float64(52.51395730706076), 'mrr20': np.float64(18.509297498501805)}
+train_loss:	42314.1042	Recall@5: 28.4893	MRR5: 16.1250	Epoch: 0,  0
+train_loss:	42314.1042	Recall@10: 39.9031	MRR10: 17.6378	Epoch: 0,  0
+train_loss:	42314.1042	Recall@20: 52.5140	MRR20: 18.5093	Epoch: 0,  0
+-------------------------------------------------------
+epoch:  1
+start training:  2026-02-04 04:38:29.344270
+	Loss:	40004.629
+start predicting:  2026-02-04 05:01:27.480341
+{'hit5': np.float64(28.981937602627255), 'mrr5': np.float64(16.338122605363985), 'hit10': np.float64(40.54022988505747), 'mrr10': np.float64(17.865304819245704), 'hit20': np.float64(53.01149425287356), 'mrr20': np.float64(18.727990745278067)}
+train_loss:	40004.6292	Recall@5: 28.9819	MRR5: 16.3381	Epoch: 1,  1
+train_loss:	40004.6292	Recall@10: 40.5402	MRR10: 17.8653	Epoch: 1,  1
+train_loss:	40004.6292	Recall@20: 53.0115	MRR20: 18.7280	Epoch: 1,  1
+-------------------------------------------------------
+epoch:  2
+start training:  2026-02-04 05:03:00.248359
+	Loss:	39192.302
+start predicting:  2026-02-04 05:25:54.217965
+{'hit5': np.float64(28.958949096880133), 'mrr5': np.float64(16.368883415435143), 'hit10': np.float64(40.367816091954026), 'mrr10': np.float64(17.885254906560323), 'hit20': np.float64(53.13628899835796), 'mrr20': np.float64(18.771235913834552)}
+train_loss:	39192.3021	Recall@5: 28.9819	MRR5: 16.3689	Epoch: 1,  2
+train_loss:	39192.3021	Recall@10: 40.5402	MRR10: 17.8853	Epoch: 1,  2
+train_loss:	39192.3021	Recall@20: 53.1363	MRR20: 18.7712	Epoch: 2,  2
+-------------------------------------------------------
+epoch:  3
+start training:  2026-02-04 05:27:26.857233
+	Loss:	38735.439
+start predicting:  2026-02-04 05:50:15.407914
+{'hit5': np.float64(29.35960591133005), 'mrr5': np.float64(16.500273672687467), 'hit10': np.float64(40.7175697865353), 'mrr10': np.float64(18.00500299736753), 'hit20': np.float64(53.27257799671593), 'mrr20': np.float64(18.873145251956693)}
+train_loss:	38735.4386	Recall@5: 29.3596	MRR5: 16.5003	Epoch: 3,  3
+train_loss:	38735.4386	Recall@10: 40.7176	MRR10: 18.0050	Epoch: 3,  3
+train_loss:	38735.4386	Recall@20: 53.2726	MRR20: 18.8731	Epoch: 3,  3
+-------------------------------------------------------
+epoch:  4
+start training:  2026-02-04 05:51:46.714543
+	Loss:	38435.688
+start predicting:  2026-02-04 06:14:42.458706
+{'hit5': np.float64(29.23809523809524), 'mrr5': np.float64(16.518035030103995), 'hit10': np.float64(40.724137931034484), 'mrr10': np.float64(18.039700784528375), 'hit20': np.float64(53.30541871921183), 'mrr20': np.float64(18.912504046690362)}
+train_loss:	38435.6880	Recall@5: 29.3596	MRR5: 16.5180	Epoch: 3,  4
+train_loss:	38435.6880	Recall@10: 40.7241	MRR10: 18.0397	Epoch: 4,  4
+train_loss:	38435.6880	Recall@20: 53.3054	MRR20: 18.9125	Epoch: 4,  4
+-------------------------------------------------------
+epoch:  5
+start training:  2026-02-04 06:16:17.833323
+	Loss:	38219.611
+start predicting:  2026-02-04 06:39:09.419273
+{'hit5': np.float64(29.24630541871921), 'mrr5': np.float64(16.468828680897644), 'hit10': np.float64(40.63382594417077), 'mrr10': np.float64(17.983672817786122), 'hit20': np.float64(53.374384236453196), 'mrr20': np.float64(18.869824377771728)}
+train_loss:	38219.6113	Recall@5: 29.3596	MRR5: 16.5180	Epoch: 3,  4
+train_loss:	38219.6113	Recall@10: 40.7241	MRR10: 18.0397	Epoch: 4,  4
+train_loss:	38219.6113	Recall@20: 53.3744	MRR20: 18.9125	Epoch: 5,  4
+-------------------------------------------------------
+epoch:  6
+start training:  2026-02-04 06:40:42.638021
+	Loss:	38055.891
+start predicting:  2026-02-04 07:03:35.223502
+{'hit5': np.float64(29.31855500821018), 'mrr5': np.float64(16.486754241926654), 'hit10': np.float64(40.57142857142857), 'mrr10': np.float64(17.97962311361326), 'hit20': np.float64(53.385878489326764), 'mrr20': np.float64(18.868056410802982)}
+train_loss:	38055.8914	Recall@5: 29.3596	MRR5: 16.5180	Epoch: 3,  4
+train_loss:	38055.8914	Recall@10: 40.7241	MRR10: 18.0397	Epoch: 4,  4
+train_loss:	38055.8914	Recall@20: 53.3859	MRR20: 18.9125	Epoch: 6,  4
+-------------------------------------------------------
+epoch:  7
+start training:  2026-02-04 07:05:08.633076
+	Loss:	37924.378
+start predicting:  2026-02-04 07:27:47.992823
+{'hit5': np.float64(29.11822660098522), 'mrr5': np.float64(16.52517788724685), 'hit10': np.float64(40.59770114942528), 'mrr10': np.float64(18.05514830453254), 'hit20': np.float64(53.298850574712645), 'mrr20': np.float64(18.934091335603675)}
+train_loss:	37924.3776	Recall@5: 29.3596	MRR5: 16.5252	Epoch: 3,  7
+train_loss:	37924.3776	Recall@10: 40.7241	MRR10: 18.0551	Epoch: 4,  7
+train_loss:	37924.3776	Recall@20: 53.3859	MRR20: 18.9341	Epoch: 6,  7
+-------------------------------------------------------
+epoch:  8
+start training:  2026-02-04 07:29:18.652549
+	Loss:	37824.733
+start predicting:  2026-02-04 07:52:06.407773
+{'hit5': np.float64(29.29064039408867), 'mrr5': np.float64(16.584017515051997), 'hit10': np.float64(40.61904761904762), 'mrr10': np.float64(18.086186045299346), 'hit20': np.float64(53.26108374384236), 'mrr20': np.float64(18.962317128513426)}
+train_loss:	37824.7334	Recall@5: 29.3596	MRR5: 16.5840	Epoch: 3,  8
+train_loss:	37824.7334	Recall@10: 40.7241	MRR10: 18.0862	Epoch: 4,  8
+train_loss:	37824.7334	Recall@20: 53.3859	MRR20: 18.9623	Epoch: 6,  8
+-------------------------------------------------------
+epoch:  9
+start training:  2026-02-04 07:53:41.728075
+	Loss:	37735.650
+start predicting:  2026-02-04 08:16:31.761362
+{'hit5': np.float64(29.226600985221673), 'mrr5': np.float64(16.556841817186648), 'hit10': np.float64(40.456486042692944), 'mrr10': np.float64(18.048003492584776), 'hit20': np.float64(53.21510673234812), 'mrr20': np.float64(18.930075942554783)}
+train_loss:	37735.6500	Recall@5: 29.3596	MRR5: 16.5840	Epoch: 3,  8
+train_loss:	37735.6500	Recall@10: 40.7241	MRR10: 18.0862	Epoch: 4,  8
+train_loss:	37735.6500	Recall@20: 53.3859	MRR20: 18.9623	Epoch: 6,  8
+-------------------------------------------------------
+epoch:  10
+start training:  2026-02-04 08:18:06.485579
+	Loss:	37665.013
+start predicting:  2026-02-04 08:41:08.391088
+{'hit5': np.float64(29.188834154351394), 'mrr5': np.float64(16.63087027914614), 'hit10': np.float64(40.37766830870279), 'mrr10': np.float64(18.111518362134127), 'hit20': np.float64(53.11822660098522), 'mrr20': np.float64(18.9941817829909)}
+train_loss:	37665.0127	Recall@5: 29.3596	MRR5: 16.6309	Epoch: 3,  10
+train_loss:	37665.0127	Recall@10: 40.7241	MRR10: 18.1115	Epoch: 4,  10
+train_loss:	37665.0127	Recall@20: 53.3859	MRR20: 18.9942	Epoch: 6,  10
+-------------------------------------------------------
+epoch:  11
+start training:  2026-02-04 08:42:43.370189
+	Loss:	37601.451
+start predicting:  2026-02-04 09:05:32.466156
+{'hit5': np.float64(29.17569786535304), 'mrr5': np.float64(16.591297208538588), 'hit10': np.float64(40.37766830870279), 'mrr10': np.float64(18.075331665233143), 'hit20': np.float64(52.9688013136289), 'mrr20': np.float64(18.94930788003143)}
+train_loss:	37601.4512	Recall@5: 29.3596	MRR5: 16.6309	Epoch: 3,  10
+train_loss:	37601.4512	Recall@10: 40.7241	MRR10: 18.1115	Epoch: 4,  10
+train_loss:	37601.4512	Recall@20: 53.3859	MRR20: 18.9942	Epoch: 6,  10
+-------------------------------------------------------
+epoch:  12
+start training:  2026-02-04 09:07:05.807819
+	Loss:	37549.526
+start predicting:  2026-02-04 09:30:04.920232
+{'hit5': np.float64(29.070607553366173), 'mrr5': np.float64(16.54280240831965), 'hit10': np.float64(40.362889983579635), 'mrr10': np.float64(18.04548570386009), 'hit20': np.float64(53.026272577996714), 'mrr20': np.float64(18.924506700832595)}
+train_loss:	37549.5258	Recall@5: 29.3596	MRR5: 16.6309	Epoch: 3,  10
+train_loss:	37549.5258	Recall@10: 40.7241	MRR10: 18.1115	Epoch: 4,  10
+train_loss:	37549.5258	Recall@20: 53.3859	MRR20: 18.9942	Epoch: 6,  10
+-------------------------------------------------------
+epoch:  13
+start training:  2026-02-04 09:31:39.059916
+	Loss:	37502.998
+start predicting:  2026-02-04 09:54:26.609564
+{'hit5': np.float64(29.239737274220033), 'mrr5': np.float64(16.62408319649699), 'hit10': np.float64(40.254515599343186), 'mrr10': np.float64(18.08514804389189), 'hit20': np.float64(52.927750410509034), 'mrr20': np.float64(18.96416998717438)}
+train_loss:	37502.9980	Recall@5: 29.3596	MRR5: 16.6309	Epoch: 3,  10
+train_loss:	37502.9980	Recall@10: 40.7241	MRR10: 18.1115	Epoch: 4,  10
+train_loss:	37502.9980	Recall@20: 53.3859	MRR20: 18.9942	Epoch: 6,  10
+-------------------------------------------------------
+epoch:  14
+start training:  2026-02-04 09:56:00.195780
+Traceback (most recent call last):
+  File "/data/UIO-SBR/compare/SPGL/main.py", line 92, in <module>
+    main()
+  File "/data/UIO-SBR/compare/SPGL/main.py", line 73, in main
+    metrics, total_loss = train_test(model, train_data, test_data, epoch)
+  File "/data/UIO-SBR/compare/SPGL/model.py", line 263, in train_test
+    tar, scores_item, loss_item, cl_item_loss = forward(model, i, train_data, epoch, train=True)
+  File "/data/UIO-SBR/compare/SPGL/model.py", line 235, in forward
+    loss_item, scores_item, cl_item_loss = model(session_item, session_len, reversed_sess_item, mask, epoch,tar, train, diff_mask)
+  File "/home/ubuntu/miniconda3/envs/sbr/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ubuntu/miniconda3/envs/sbr/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/UIO-SBR/compare/SPGL/model.py", line 179, in forward
+    item_embeddings_i = self.ItemGraph(self.adjacency, self.embedding.weight)
+  File "/home/ubuntu/miniconda3/envs/sbr/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/ubuntu/miniconda3/envs/sbr/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/UIO-SBR/compare/SPGL/model.py", line 64, in forward
+    item_embeddings = torch.sparse.mm(trans_to_cuda(adjacency), item_embeddings*attention_weights)
+  File "/data/UIO-SBR/compare/SPGL/model.py", line 17, in trans_to_cuda
+    return variable.cuda()
+KeyboardInterrupt

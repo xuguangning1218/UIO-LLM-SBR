@@ -1,0 +1,179 @@
+/home/guangxu/work/UIO-SBR/compare/MGCOT/main.py:66: UserWarning: torch.sparse.SparseTensor(indices, values, shape, *, device=) is deprecated.  Please use torch.sparse_coo_tensor(indices, values, shape, dtype=, device=). (Triggered internally at /pytorch/torch/csrc/utils/tensor_new.cpp:644.)
+  sparse_matrix = torch.sparse.LongTensor(i, v, torch.Size(shape))
+Namespace(dataset='retailRocket_DSAN', batchSize=64, hiddenSize=100, epoch=15, lr=0.001, lr_dc=0.1, lr_dc_step=5, l2=1e-05, step=1, patience=3, nonhybrid=False, validation=False, valid_portion=0.1, w_ne=1.7, gama=1.7, seed=46, num_attention_heads=5, neighbor_n=3, contrastive_weight=1.0)
+random_seed: 46
+self.neighbor: 3
+-------------------------------------------------------
+epoch:  0
+start training:  2026-02-06 04:46:07.315151
+contrastive_weight: 1.0
+[0/6776] Loss: 19.9227
+[1356/6776] Loss: 11.6454
+[2712/6776] Loss: 9.1348
+[4068/6776] Loss: 9.5308
+[5424/6776] Loss: 8.5517
+	Loss:	67677.250
+start predicting:  2026-02-06 05:10:22.135021
+P@5: 41.9839	MRR@5: 28.2098	Epoch: 0,  0
+P@10: 48.6453	MRR@10: 29.1176	Epoch: 0,  0
+P@20: 54.2823	MRR@20: 29.5169	Epoch: 0,  0
+Best Result:
+	P@20:	54.2823	MRR@20:	29.5169	Epoch:	0,	0
+-------------------------------------------------------
+epoch:  1
+start training:  2026-02-06 05:10:48.353072
+contrastive_weight: 1.0
+[0/6776] Loss: 7.9821
+[1356/6776] Loss: 8.4702
+[2712/6776] Loss: 8.3333
+[4068/6776] Loss: 8.7809
+[5424/6776] Loss: 6.7868
+	Loss:	52818.750
+start predicting:  2026-02-06 05:34:50.004712
+P@5: 45.0436	MRR@5: 29.8622	Epoch: 1,  1
+P@10: 52.9276	MRR@10: 30.9327	Epoch: 1,  1
+P@20: 59.2916	MRR@20: 31.3790	Epoch: 1,  1
+Best Result:
+	P@20:	59.2916	MRR@20:	31.3790	Epoch:	1,	1
+-------------------------------------------------------
+epoch:  2
+start training:  2026-02-06 05:35:15.475822
+contrastive_weight: 1.0
+[0/6776] Loss: 6.8603
+[1356/6776] Loss: 7.0204
+[2712/6776] Loss: 7.1812
+[4068/6776] Loss: 8.1688
+[5424/6776] Loss: 7.1836
+	Loss:	49452.145
+start predicting:  2026-02-06 05:58:57.287237
+P@5: 45.6913	MRR@5: 30.4223	Epoch: 2,  2
+P@10: 54.1105	MRR@10: 31.5610	Epoch: 2,  2
+P@20: 60.7983	MRR@20: 32.0307	Epoch: 2,  2
+Best Result:
+	P@20:	60.7983	MRR@20:	32.0307	Epoch:	2,	2
+-------------------------------------------------------
+epoch:  3
+start training:  2026-02-06 05:59:22.455064
+contrastive_weight: 1.0
+[0/6776] Loss: 6.2860
+[1356/6776] Loss: 6.0405
+[2712/6776] Loss: 7.1642
+[4068/6776] Loss: 7.0458
+[5424/6776] Loss: 6.2857
+	Loss:	47738.863
+start predicting:  2026-02-06 06:23:04.762909
+P@5: 46.2265	MRR@5: 30.8608	Epoch: 3,  3
+P@10: 54.3814	MRR@10: 31.9685	Epoch: 3,  3
+P@20: 61.4393	MRR@20: 32.4634	Epoch: 3,  3
+Best Result:
+	P@20:	61.4393	MRR@20:	32.4634	Epoch:	3,	3
+-------------------------------------------------------
+epoch:  4
+start training:  2026-02-06 06:23:30.393307
+contrastive_weight: 1.0
+[0/6776] Loss: 6.6900
+[1356/6776] Loss: 6.0923
+[2712/6776] Loss: 6.2346
+[4068/6776] Loss: 6.7130
+[5424/6776] Loss: 6.3670
+	Loss:	46618.012
+start predicting:  2026-02-06 06:47:14.314948
+P@5: 46.6231	MRR@5: 30.8608	Epoch: 4,  3
+P@10: 54.7515	MRR@10: 31.9685	Epoch: 4,  3
+P@20: 61.6971	MRR@20: 32.4634	Epoch: 4,  3
+Best Result:
+	P@20:	61.6971	MRR@20:	32.4634	Epoch:	4,	3
+-------------------------------------------------------
+epoch:  5
+start training:  2026-02-06 06:47:39.969669
+contrastive_weight: 1.0
+[0/6776] Loss: 5.7113
+[1356/6776] Loss: 6.4638
+[2712/6776] Loss: 6.7781
+[4068/6776] Loss: 5.6169
+[5424/6776] Loss: 6.4164
+	Loss:	41819.004
+start predicting:  2026-02-06 07:11:26.384701
+P@5: 48.2091	MRR@5: 31.9175	Epoch: 5,  5
+P@10: 56.4763	MRR@10: 33.0433	Epoch: 5,  5
+P@20: 63.2170	MRR@20: 33.5093	Epoch: 5,  5
+Best Result:
+	P@20:	63.2170	MRR@20:	33.5093	Epoch:	5,	5
+-------------------------------------------------------
+epoch:  6
+start training:  2026-02-06 07:11:51.888061
+contrastive_weight: 1.0
+[0/6776] Loss: 5.6757
+[1356/6776] Loss: 6.1875
+[2712/6776] Loss: 5.9299
+[4068/6776] Loss: 5.6291
+[5424/6776] Loss: 6.2129
+	Loss:	40379.836
+start predicting:  2026-02-06 07:35:36.381452
+P@5: 48.7510	MRR@5: 32.0598	Epoch: 6,  6
+P@10: 56.7407	MRR@10: 33.1352	Epoch: 6,  6
+P@20: 63.4946	MRR@20: 33.6052	Epoch: 6,  6
+Best Result:
+	P@20:	63.4946	MRR@20:	33.6052	Epoch:	6,	6
+-------------------------------------------------------
+epoch:  7
+start training:  2026-02-06 07:36:01.656052
+contrastive_weight: 1.0
+[0/6776] Loss: 5.5000
+[1356/6776] Loss: 5.7296
+[2712/6776] Loss: 6.0911
+[4068/6776] Loss: 4.8379
+[5424/6776] Loss: 5.9410
+	Loss:	39638.594
+start predicting:  2026-02-06 07:59:48.072324
+P@5: 48.7510	MRR@5: 32.0598	Epoch: 6,  6
+P@10: 56.7407	MRR@10: 33.1352	Epoch: 6,  6
+P@20: 63.4946	MRR@20: 33.6052	Epoch: 6,  6
+Best Result:
+	P@20:	63.4946	MRR@20:	33.6052	Epoch:	6,	6
+-------------------------------------------------------
+epoch:  8
+start training:  2026-02-06 08:00:13.904574
+contrastive_weight: 1.0
+[0/6776] Loss: 5.5476
+[1356/6776] Loss: 5.8580
+[2712/6776] Loss: 6.0941
+[4068/6776] Loss: 5.9978
+[5424/6776] Loss: 5.7676
+	Loss:	39032.219
+start predicting:  2026-02-06 08:24:02.934065
+P@5: 48.7510	MRR@5: 32.0598	Epoch: 6,  6
+P@10: 56.7407	MRR@10: 33.1352	Epoch: 6,  6
+P@20: 63.4946	MRR@20: 33.6052	Epoch: 6,  6
+Best Result:
+	P@20:	63.4946	MRR@20:	33.6052	Epoch:	6,	6
+-------------------------------------------------------
+epoch:  9
+start training:  2026-02-06 08:24:27.992995
+contrastive_weight: 1.0
+[0/6776] Loss: 5.3305
+[1356/6776] Loss: 6.1885
+[2712/6776] Loss: 6.2356
+[4068/6776] Loss: 5.5790
+[5424/6776] Loss: 5.2137
+	Loss:	38497.027
+start predicting:  2026-02-06 08:48:13.651576
+P@5: 48.7510	MRR@5: 32.0598	Epoch: 6,  6
+P@10: 56.7407	MRR@10: 33.1352	Epoch: 6,  6
+P@20: 63.4946	MRR@20: 33.6052	Epoch: 6,  6
+Best Result:
+	P@20:	63.4946	MRR@20:	33.6052	Epoch:	6,	6
+-------------------------------------------------------
+Run time: 14553.133790 s
+Traceback (most recent call last):
+  File "/home/guangxu/work/UIO-SBR/compare/MGCOT/main.py", line 181, in <module>
+    main()
+  File "/home/guangxu/work/UIO-SBR/compare/MGCOT/main.py", line 165, in main
+    torch.save(model, PATH)
+  File "/home/guangxu/miniconda3/envs/sbr/lib/python3.10/site-packages/torch/serialization.py", line 943, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+  File "/home/guangxu/miniconda3/envs/sbr/lib/python3.10/site-packages/torch/serialization.py", line 810, in _open_zipfile_writer
+    return container(name_or_buffer)
+  File "/home/guangxu/miniconda3/envs/sbr/lib/python3.10/site-packages/torch/serialization.py", line 781, in __init__
+    super().__init__(torch._C.PyTorchFileWriter(self.name, _compute_crc32))
+RuntimeError: Parent directory ./final_model does not exist.
