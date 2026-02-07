@@ -11,9 +11,9 @@ from tqdm import tqdm
 from torch.utils.data import DataLoader, TensorDataset
 import random
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-torch.cuda.set_device(0)
+# torch.cuda.set_device(0)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--path', default='/data/UIO-SBR/datasets/', help='path of datasets')

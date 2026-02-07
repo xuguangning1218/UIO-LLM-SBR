@@ -1,0 +1,34 @@
+# ==========================
+# Python 基础
+# ==========================
+__pycache__/
+
+# ==========================
+# Jupyter Notebooks
+# ==========================
+.ipynb_checkpoints/
+
+# ==========================
+# VS Code (编辑器配置)
+# ==========================
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# ==========================
+# PyTorch & Deep Learning
+# ==========================
+# 模型权重文件 (非常重要！防止仓库体积爆炸)
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# ==========================
+# 操作系统文件
+# ==========================
+.DS_Store
+Thumbs.db

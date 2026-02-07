@@ -2,11 +2,20 @@
 
 # ================= 配置区域 =================
 # 指定要使用的 GPU ID (例如: 0 1 2)
-GPUS=(0 1 2 3 4)
+
+# MIG-5cd3ace0-3992-522f-82d6-8e435746622d
+# MIG-6abedaa4-16cd-51b2-9b2f-043073ed897a
+# MIG-dbef6f87-fd33-5950-84e0-7007d974c9ac
+# MIG-dc67f6ae-4c27-5869-bcd2-8560a2da46c7
+# MIG-a6f8dd9b-6af8-5e75-8654-84fb2b7b8f6d
+# MIG-12e7197d-4e01-5bc8-aa76-2be6e3a55125
+# MIG-0bf58d0a-b3c9-59ef-811b-2885c7169709
+# MIG-a0bf155a-639b-5746-92c8-243d8972b5a9
+
+GPUS=(5 6 7)
 
 # 数据集列表
-# DATASETS=("diginetica" "retailRocket_DSAN" "Tmall" "Nowplaying")
-DATASETS=("Nowplaying")
+DATASETS=("diginetica" "retailRocket_DSAN" "Tmall" "Nowplaying")
 
 # 运行次数设置 (使用不同的 Seed 确保结果具有统计意义)
 SEEDS=(42 43 44 45 46)
@@ -16,7 +25,7 @@ EPOCH=15
 BATCH_SIZE=100
 
 # 日志存放目录
-LOG_DIR="/home/xuguangning/work/UIO-LLM-SBR/compare/SPGL/logs/"
+LOG_DIR="/home/xuguangning/work/UIO-LLM-SBR/compare/Code4HyPro/logs"
 mkdir -p $LOG_DIR
 # ===========================================
 

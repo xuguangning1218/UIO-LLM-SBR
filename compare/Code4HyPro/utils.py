@@ -219,7 +219,7 @@ class Data(Dataset):
         for i in u_input:
             u_input_index.append(node.tolist().index(i))
 
-        return [torch.tensor(target), torch.tensor(u_input),
+        return [torch.tensor(target, dtype=torch.long), torch.tensor(u_input, dtype=torch.long),
                 torch.tensor(session_items),  torch.tensor(adj), torch.tensor(u_input_index)]
 
     def __len__(self):
