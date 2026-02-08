@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', default='diginetica', help='dataset name: /Tmall/Nowplaying/diginetica/yoochoose1_4/yoochoose1_64')
 parser.add_argument('--batchSize', type=int, default=512, help='input batch size') #64,100,256,512
 parser.add_argument('--hiddenSize', type=int, default=100, help='hidden state size')
-parser.add_argument('--epoch', type=int, default=30, help='the number of epochs to train for')
+parser.add_argument('--epoch', type=int, default=15, help='the number of epochs to train for')
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate')  # [0.001, 0.0005, 0.0001]
 parser.add_argument('--lr_dc', type=float, default=0.1, help='learning rate decay rate')
 parser.add_argument('--lr_dc_step', type=int, default=5, help='the number of steps after which the learning rate decay 3')
@@ -38,7 +38,7 @@ parser.add_argument('--validation', action='store_true', help='validation')
 parser.add_argument('--valid_portion', type=float, default=0.1, help='split the portion of training set as validation set')
 parser.add_argument('--w_ne', type=float, default=1.7, help='neighbor weight') #digi：1.7 Tmall 0.9
 parser.add_argument('--gama', type=float, default=1.7, help='cos_sim') #digi：1.7
-
+parser.add_argument('--seed', type=int, default=42, help='random seed')
 parser.add_argument('--num_attention_heads', type=int, default=5, help='Multi-Att heads')
 parser.add_argument('--neighbor_n', type=int, default=3, help='Relation neighbor_n')
 parser.add_argument('--contrastive_weight', type=float, default=1.0, help='contrastive_weight')
@@ -49,12 +49,13 @@ print(opt)
 
 # 设置随机数种子
 # random_seed = 2028
-# print("random_seed:", random_seed)
-# torch.manual_seed(random_seed)
-# np.random.seed(random_seed)
-# random.seed(random_seed)
-# if torch.cuda.is_available():
-#     torch.cuda.manual_seed_all(random_seed)
+random_seed = opt.seed
+print("random_seed:", random_seed)
+torch.manual_seed(random_seed)
+np.random.seed(random_seed)
+random.seed(random_seed)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed_all(random_seed)
 
 def sparse2sparse(coo_matrix):
     v1 = coo_matrix.data
@@ -67,12 +68,12 @@ def sparse2sparse(coo_matrix):
 
 def main():
     # pickle.load 函数从打开的文件对象中加载数据。pickle.load 会反序列化文件中的数据，将其恢复为原始的 Python 对象。
-    train_data = pickle.load(open('./datasets/' + opt.dataset + '/train.txt', 'rb'))
+    train_data = pickle.load(open('/home/guangxu/work/UIO-SBR/datasets/' + opt.dataset + '/train.txt', 'rb'))
     if opt.validation:
         train_data, valid_data = split_validation(train_data, opt.valid_portion)
         test_data = valid_data
     else:
-        test_data = pickle.load(open('./datasets/' + opt.dataset + '/test.txt', 'rb'))
+        test_data = pickle.load(open('/home/guangxu/work/UIO-SBR/datasets/' + opt.dataset + '/test.txt', 'rb'))
     
     # dataset:（会话序列，标签）
     train_data_len = len(train_data[0])
@@ -91,14 +92,14 @@ def main():
         n_node = 60417
     elif opt.dataset == 'Tmall':
         n_node = 40728
-    elif opt.dataset == 'RetailRocket':
+    elif opt.dataset == 'retailRocket_DSAN':
         n_node = 36969
     else:
         n_node = 310
 
     start = time.time()
     
-    global_adj_coo = scipy.sparse.load_npz('datasets/' + opt.dataset + '/adj_global.npz')
+    global_adj_coo = scipy.sparse.load_npz('/home/guangxu/work/UIO-SBR/datasets/' + opt.dataset + '/adj_global.npz')
     sparse_global_adj = trans_to_cuda(sparse2sparse(global_adj_coo))
     graphRecommender = trans_to_cuda(GraphRecommender(opt, n_node, sparse_global_adj, len_session=train_data.len_max,
                                               n_train_sessions=train_data_len))
