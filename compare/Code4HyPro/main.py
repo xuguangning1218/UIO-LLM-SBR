@@ -49,7 +49,7 @@ parser.add_argument('--dropout_hid', type=float, default=0.1, help='Dropout rate
 parser.add_argument('--isvalidation', action='store_true', help='validation')
 parser.add_argument('--seed', type=int, default=42, help='random seed')
 
-opt = parser.parse_args(args=[])
+opt = parser.parse_args()
 print(opt)
 random_seed = opt.seed
 np.random.seed(random_seed)
