@@ -34,3 +34,14 @@ __pycache__/
 Thumbs.db
 
 *.jsonl
+*.arrow
+*_predictions.json
+
+# ==========================
+# 训练输出和数据集
+# ==========================
+runs/
+trainer_output/
+weights/
+tokenized_*/
+saved_model/

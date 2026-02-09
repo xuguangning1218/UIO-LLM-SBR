@@ -15,7 +15,7 @@ import numpy as np
 import torch
 from torch import nn
 from tqdm import tqdm
-from datasets.SBRDataSet import SBRDataSet
+from mydatasets.SBRDataSet import SBRDataSet
 from model.UIOSBR import LossFunction, UIOSBR
 import logging
 
@@ -46,6 +46,7 @@ def get_parser():
     parser.add_argument("--use_duignn", action="store_false", help="whether use DUI-GNN")
     parser.add_argument("--use_seq_item_occur_attn", action="store_false", help="whether use recurrence aware attention")
     parser.add_argument("--use_res", action="store_false", help="whether use review-and-explore-strategy")
+    parser.add_argument("--augmentation", default=None, choices=['LLM4IDRec'], help="whether use augmentation")
     opt = parser.parse_args()
     return opt
 
@@ -136,9 +137,11 @@ def test(model, test_loader, device):
 def main():
     
     opt = get_parser()
-
-    train_data = pickle.load(open("./datasets/" + opt.dataset + "/train.txt", "rb"))
-    test_data = pickle.load(open("./datasets/" + opt.dataset + "/test.txt", "rb"))
+    if opt.augmentation is not None:
+        train_data = pickle.load(open("./mydatasets/" + opt.dataset + f"/train_augmented_{opt.augmentation}.txt", "rb"))
+    else:
+        train_data = pickle.load(open("./mydatasets/" + opt.dataset + "/train.txt", "rb"))
+    test_data = pickle.load(open("./mydatasets/" + opt.dataset + "/test.txt", "rb"))
 
     train_data = SBRDataSet(train_data, opt.session_truncated_len)
     test_data = SBRDataSet(test_data, opt.session_truncated_len)
@@ -161,7 +164,7 @@ def main():
 
     for _ in range(opt.run_times):
         
-        model_save_folder = './' + opt.dataset +'-save-' + datetime.datetime.now().strftime( '%Y%m%d_%H%M%S_%f') + '/'
+        model_save_folder = './saved_model/' + opt.dataset +'-save-' + datetime.datetime.now().strftime( '%Y%m%d_%H%M%S_%f') + '/'
         if os.path.exists(model_save_folder) == False:
             os.makedirs(model_save_folder)
             logger = setup_logger(model_save_folder)
