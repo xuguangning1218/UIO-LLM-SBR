@@ -8,7 +8,7 @@ import argparse
 parser = argparse.ArgumentParser()
 # Datasets
 parser.add_argument('--path', default='/data/UIO-LLM-SBR/datasets/', help='path of datasets')
-parser.add_argument('--dataset', default='Tmall', help='Tmall-2/diginetica-2/retailrocket-2') 
+parser.add_argument('--dataset', default='Tmall', help='Tmall/diginetica/retailrocket') 
 
 opt = parser.parse_args()
 # ===========================================
@@ -59,12 +59,15 @@ def main():
     # 1. 构建文件路径
     base_dir = opt.path + opt.dataset
     train_file = os.path.join(base_dir, 'train.txt')
+    test_file = os.path.join(base_dir, 'test.txt')
 
     print(f"正在读取文件: {train_file}")
+    print(f"正在读取文件: {test_file}")
 
     # 2. 加载 Pickle 数据 (你提供的读取逻辑)
     try:
         train = pickle.load(open(train_file, 'rb'))
+        test = pickle.load(open(test_file, 'rb'))
     except FileNotFoundError:
         print("错误：找不到输入文件，请检查 opt.path 和 opt.dataset 配置是否正确。")
         return
@@ -72,16 +75,23 @@ def main():
     # 3. 提取 x 和 y
     train_x = train[0]
     train_y = train[1]
+    
+    test_x = test[0]
+    test_y = test[1]
 
     print(f"训练集数量: {len(train_x)}")
+    print(f"测试集数量: {len(test_x)}")
 
     # 4. 转换并保存为 JSONL
     # 保存路径: opt.path + opt.dataset + '/train.jsonl'
     train_output_path = os.path.join(base_dir, 'train_LLM4IDRec.jsonl')
+    test_output_path = os.path.join(base_dir, 'test_LLM4IDRec.jsonl')
     save_to_jsonl(train_x, train_y, train_output_path)
+    save_to_jsonl(test_x, test_y, test_output_path)
 
     print("\n所有转换完成！")
     print(f"生成的训练集: {train_output_path}")
+    print(f"生成的训练集: {test_output_path}")
 
 if __name__ == "__main__":
     main()

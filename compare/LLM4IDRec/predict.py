@@ -14,27 +14,30 @@ import time
 # time.sleep(time_all)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--llm_ckp', type=str, help='checkpoint of LLM')
-parser.add_argument('--lora_path', type=str, help='lora adapters path')
-parser.add_argument('--data_path', type=str, help='data to predict, should be json-lines format')
-parser.add_argument('--prompt_key', type=str, help='the key of prompts in the data file')
-parser.add_argument('--target_key', type=str, help='the key of targets/labels in the data file')
+parser.add_argument('--model_path', type=str, default="meta-llama/Meta-Llama-3-8B", help='checkpoint of LLM')
+parser.add_argument('--root_path', type=str, default="/data/UIO-LLM-SBR/datasets/", help='dataset root path')
+parser.add_argument('--dataset', type=str, default="diginetica", help='dataset')
+parser.add_argument('--idicator', type=str, default="LLM4IDRec", help='method')
+# parser.add_argument('--data_path', type=str, help='data to predict, should be json-lines format')
+parser.add_argument('--prompt_key', type=str, default="prompt", help='the key of prompts in the data file')
+parser.add_argument('--target_key', type=str, default="target", help='the key of targets/labels in the data file')
 parser.add_argument('--batch_size', type=int, help='batch size')
-parser.add_argument('--id', type=str, help='id')
+# parser.add_argument('--id', type=str, help='id')
 args = parser.parse_args()
 
-model = AutoModelForCausalLM.from_pretrained(args.llm_ckp, trust_remote_code=True, device_map="auto").half()
-tokenizer = AutoTokenizer.from_pretrained(args.llm_ckp, trust_remote_code=True)
-model = PeftModel.from_pretrained(model, args.lora_path).half()  
+model = AutoModelForCausalLM.from_pretrained(args.model_path, trust_remote_code=True, device_map="auto")
+tokenizer = AutoTokenizer.from_pretrained(args.model_path, trust_remote_code=True)
+lora_path = f"weights/train_{args.dataset}_{args.idicator}"
+model = PeftModel.from_pretrained(model, lora_path)
 
 
 #model = AutoModelForCausalLM.from_pretrained(args.lora_path, trust_remote_code=True, device_map="auto").half()
-#tokenizer = AutoTokenizer.from_pretrained(args.llm_ckp, trust_remote_code=True)
+#tokenizer = AutoTokenizer.from_pretrained(args.model_path, trust_remote_code=True)
 # model = PeftModel.from_pretrained(model, args.lora_path).half()  
 
-
+data_path = f'{args.root_path}/{args.dataset}/test_{args.idicator}.jsonl'
 prompts, targets = [], []
-with open(args.data_path, 'r') as f:
+with open(data_path, 'r') as f:
     lines = f.readlines()
     ds = [json.loads(line) for line in lines]
     for d in ds:
@@ -42,7 +45,9 @@ with open(args.data_path, 'r') as f:
         targets.append(d[args.target_key])
     
 
-tokenizer.pad_token = tokenizer.unk_token
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.pad_token_id = tokenizer.eos_token_id  # 显式同步 ID，防止意外
+    
 def predict(prompts):
     if isinstance(prompts, str):
         prompts = [prompts]
@@ -61,8 +66,9 @@ def predict(prompts):
     outputs = model.generate(**input_tensors, max_new_tokens=200, # 按照指定格式，输出差不多就这么长，多了就不用输出了
                             temperature=0.8, #0.8
                             top_p=0.9,
+                            pad_token_id=tokenizer.pad_token_id,  # <--- 加上这一行更稳健
                             # top_k=50, #null
-                            eos_token_id=(2, 103028),
+                            # eos_token_id=(2, 103028),
                             )
     # outputs = model.generate(**input_tensors, max_new_tokens=200)
     # x1=tokenizer.batch_decode(outputs, skip_special_tokens=True)
@@ -88,19 +94,20 @@ for i in tqdm(range(len(prompts)//bs + 1)):
         batch_results= predict(batch)
         predicted_results.extend(batch_results)
         # 打印着看看
-        for prompt, each in zip(batch[:2], batch_results[:2]):
-            print('\n*****prompt******')
-            print(prompt)
-            print(' ===prediction===>')
-            print(each)
+        # for prompt, each in zip(batch[:2], batch_results[:2]):
+        #     print('\n*****prompt******')
+        #     print(prompt)
+        #     print(' ===prediction===>')
+        #     print(each)
     # if count==0:
     #     break
     # count+=1
 
-name = args.lora_path.split('/')[-1]
-name += args.id
-os.makedirs('data/eval', exist_ok=True)
-with open(f'data/eval/{name}_predictions.json', 'w', encoding='utf8') as f:
+# name = args.lora_path.split('/')[-1]
+# name += args.id
+# os.makedirs('data/eval', exist_ok=True)
+save_path = f'{args.root_path}/{args.dataset}/{args.idicator}_predictions.json'
+with open(save_path, 'w', encoding='utf8') as f:
     for prompt, target, prediction in zip(prompts, targets, predicted_results):
         line = {
             'prompt': prompt,
@@ -111,5 +118,5 @@ with open(f'data/eval/{name}_predictions.json', 'w', encoding='utf8') as f:
         f.write(line)
         f.write('\n')
 
-print(f'prediction file saved at [`data/eval/{name}_predictions.json`]')
+print(f'prediction file saved at [{save_path}]')
 pdb.set_trace()

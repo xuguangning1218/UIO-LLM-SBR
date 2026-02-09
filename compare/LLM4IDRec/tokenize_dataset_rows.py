@@ -7,12 +7,18 @@ import pdb
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model_checkpoint", type=str, help="checkpoint, like `THUDM/chatglm-6b`")
-parser.add_argument("--input_file", type=str, help="Instruction Data file address, each line in the file is in JSON format, containing an output and an output")
+parser.add_argument("--root_path", type=str, default="/data/UIO-LLM-SBR/mydatasets/")
+parser.add_argument("--dataset",default="diginetica",help="dataset name: diginetica/retailRocket_DSAN/Tmall/Nowplaying")
+parser.add_argument("--idicator",default="LLM4IDRec",help="prompt template")
+# parser.add_argument("--input_file", type=str, help="Instruction Data file address, each line in the file is in JSON format, containing an output and an output")
 parser.add_argument("--prompt_key", type=str, default=f"prompt", help="In your JSON(input_file), What are the input fields for Instruction")
 parser.add_argument("--target_key", type=str, default=f"target", help="In your JSON(input_file), What are the output fields for Instruction")
-parser.add_argument("--save_name", type=str, default=f"temp", help="The storage location of the dataset after tokenization")
-parser.add_argument("--max_seq_length", type=int, default=2040)
+# parser.add_argument("--save_name", type=str, default=f"temp", help="The storage location of the dataset after tokenization")
+parser.add_argument("--max_seq_length", type=int, default=2048)
 parser.add_argument("--skip_overlength", type=bool, default=False)
+parser.add_argument('--user_id_aug_size', type=int, default=1, help='augmentation sequence per usid')
+parser.add_argument('--target_aug_ratio', type=float, default=0.1, help='Target augmentation ratio (e.g., 0.1 for 10%)')
+
 args = parser.parse_args()
 model_checkpoint = args.model_checkpoint
 # base_model_name = model_checkpoint.split('/')[-1]
@@ -56,8 +62,8 @@ def read_jsonl(path, max_seq_length, prompt_key,target_key,skip_overlength=False
 
 # 输入文件统一放在 data 文件夹下
 # 输出文件统一放在 data/tokenized_data 文件夹下
-input_file_path = f'data/{args.input_file}'
-save_path = f"data/tokenized_data/{args.save_name}"
+input_file_path = f'{args.root_path}/{args.dataset}/train_{args.idicator}_size_{args.user_id_aug_size}_rate_{args.target_aug_ratio}.jsonl'
+save_path = f'{args.root_path}/{args.dataset}/tokenized_{args.idicator}_size_{args.user_id_aug_size}_rate_{args.target_aug_ratio}'
 dataset = datasets.Dataset.from_generator(
     lambda: read_jsonl(input_file_path, args.max_seq_length, args.prompt_key,args.target_key,args.skip_overlength)
 )

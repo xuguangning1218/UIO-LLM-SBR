@@ -4,11 +4,11 @@ from torch.utils.tensorboard import SummaryWriter
 import transformers
 from transformers import TrainingArguments
 from transformers import Trainer, HfArgumentParser
-from transformers import AutoTokenizer, AutoModel,AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModel,AutoModelForCausalLM, BitsAndBytesConfig
 from transformers import DataCollatorForLanguageModeling
 import torch
 import torch.nn as nn
-from peft import get_peft_model, LoraConfig, TaskType
+from peft import get_peft_model, LoraConfig, TaskType, prepare_model_for_kbit_training
 from dataclasses import dataclass, field
 import datasets
 import os
@@ -17,54 +17,54 @@ import pdb
 from shutil import copyfile   
 import sys
 
-model_path = "./7b-chat/Llama-2-7b-chat"   #"../Llama-2-7b" # "./7b-hf" #  "../Llama-2-7b"   # "../Llama-2-7b" #"THUDM/chatglm-6b"
-tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-
-
 @dataclass
 class FinetuneArguments:
-    tokenized_dataset: str = field(default=" ") # tokenized之后的数据集文件夹
-    model_path: str = field(default=" ")
+    model_path: str = field(default="meta-llama/Meta-Llama-3-8B")
     lora_rank: int = field(default=8) 
+    lora_alpha: int = field(default=32) 
+    lora_dropout: float = field(default=0.05)
+    dataset: str = field(default="diginetica")
+    idicator: str = field(default="LLM4IDRec")
+    root_path: str = field(default="/data/UIO-LLM-SBR/mydatasets/")
+    user_id_aug_size: int = field(default=1)
+    target_aug_ratio: float = field(default=0.1)
 
 
 class CastOutputToFloat(nn.Sequential):
     def forward(self, x):
         return super().forward(x).to(torch.float32)
 
+# def data_collator(features: list) -> dict:
+#     len_ids = [len(feature["input_ids"]) for feature in features]
+#     longest = max(len_ids)
+#     input_ids = []
+#     labels_list = []
+#     for ids_l, feature in sorted(zip(len_ids, features), key=lambda x: -x[0]):
+#         ids = feature["input_ids"]
+#         seq_len = feature["seq_len"] # prompt length
+#         labels = (
+#             [-100] * (seq_len - 1) + ids[(seq_len - 1) :] + [-100] * (longest - ids_l)
+#         )
+#         ids = ids + [tokenizer.pad_token_id] * (longest - ids_l)
+#         _ids = torch.LongTensor(ids)
+#         labels_list.append(torch.LongTensor(labels))
+#         input_ids.append(_ids)  
+#     input_ids = torch.stack(input_ids)
+#     labels = torch.stack(labels_list)
+#     #tokenizer.batch_decode(input_ids)
+#     #tokenizer.batch_decode(labels)
 
-tokenizer.pad_token = tokenizer.unk_token
-def data_collator(features: list) -> dict:
-    len_ids = [len(feature["input_ids"]) for feature in features]
-    longest = max(len_ids)
-    input_ids = []
-    labels_list = []
-    for ids_l, feature in sorted(zip(len_ids, features), key=lambda x: -x[0]):
-        ids = feature["input_ids"]
-        seq_len = feature["seq_len"] # prompt length
-        labels = (
-            [-100] * (seq_len - 1) + ids[(seq_len - 1) :] + [-100] * (longest - ids_l)
-        )
-        ids = ids + [tokenizer.pad_token_id] * (longest - ids_l)
-        _ids = torch.LongTensor(ids)
-        labels_list.append(torch.LongTensor(labels))
-        input_ids.append(_ids)  
-    input_ids = torch.stack(input_ids)
-    labels = torch.stack(labels_list)
-    #tokenizer.batch_decode(input_ids)
-    #tokenizer.batch_decode(labels)
-
-    return {
-        "input_ids": input_ids,
-        "labels": labels,
-    }
+#     return {
+#         "input_ids": input_ids,
+#         "labels": labels,
+#     }
 # 这里的 collator 主要参考了 https://github.com/mymusise/ChatGLM-Tuning/blob/master/finetune.py 中的写法
 # 将 prompt 的部分的label也设置为了 -100，从而在训练时不纳入loss的计算
 # 对比之下，我在 baichaun_lora_tuning.py 中，是直接使用 DataCollatorForLanguageModeling，prompt 也纳入了计算。
 # 这两种方式孰优孰劣尚不得而知，欢迎在issue或discussion中讨论。
 
 class ModifiedTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         return model(
             input_ids=inputs["input_ids"],
             labels=inputs["labels"],
@@ -90,15 +90,15 @@ def main():
         (FinetuneArguments, TrainingArguments)
     ).parse_args_into_dataclasses()
     
-        
+    training_args.output_dir = f"weights/train_{finetune_args.dataset}_{finetune_args.idicator}_size_{finetune_args.user_id_aug_size}_rate_{finetune_args.target_aug_ratio}"
     path_save_base= training_args.output_dir
     if (os.path.exists(path_save_base)):
         print('has results save path')
     else:   
         os.makedirs(path_save_base)
     result_file=path_save_base+'/results.txt'#open(path_save_base+'/results.txt','a')#('./log/results_gcmc.txt','w+') 
-    copyfile('./lora_tuning.py', path_save_base+'/lora_tuning.py') 
-    copyfile('./lora_tuning.sh', path_save_base+'/lora_tuning.sh') 
+    # copyfile('./lora_tuning.py', path_save_base+'/lora_tuning.py') 
+    # copyfile('./lora_tuning.sh', path_save_base+'/lora_tuning.sh') 
 
     class Logger(object):
         def __init__(self, filename='default.log', stream=sys.stdout):
@@ -117,18 +117,32 @@ def main():
 
 
     # load dataset
-    dataset = datasets.load_from_disk('data/tokenized_data/'+finetune_args.tokenized_dataset)
+    load_path = f'{finetune_args.root_path}/{finetune_args.dataset}/tokenized_{finetune_args.idicator}_size_{finetune_args.user_id_aug_size}_rate_{finetune_args.target_aug_ratio}'
+    dataset = datasets.load_from_disk(load_path)
     dataset = dataset.shuffle(seed=2023) #我加上了随机数，不然数据都是按照顺序去读，就容易产生连续的值。
     # dataset = dataset.select(range(10000))
     print(f"\n{len(dataset)=}\n")
     
     # init model
+    bnb_config_4bit = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_quant_type="nf4",       # 推荐使用 NF4 (Normal Float 4) 数据类型
+        bnb_4bit_compute_dtype=torch.bfloat16, # 计算时使用的精度 (显卡支持 bf16 最好，否则用 float16)
+        bnb_4bit_use_double_quant=True,  # 二次量化，进一步节省显存
+    )
+        
     model = AutoModelForCausalLM.from_pretrained(
-        model_path, load_in_8bit=False, trust_remote_code=True, 
-        device_map="auto" # 模型不同层会被自动分配到不同GPU上进行计算
+        finetune_args.model_path, 
+        trust_remote_code=True, 
+        device_map="auto", # 模型不同层会被自动分配到不同GPU上进行计算
+        quantization_config=bnb_config_4bit,
         # device_map={'':torch.cuda.current_device()}
     )
-    print(model.hf_device_map)
+    # model_path = "./7b-chat/Llama-2-7b-chat"   #"../Llama-2-7b" # "./7b-hf" #  "../Llama-2-7b"   # "../Llama-2-7b" #"THUDM/chatglm-6b"
+    tokenizer = AutoTokenizer.from_pretrained(finetune_args.model_path, trust_remote_code=True)
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.pad_token_id = tokenizer.eos_token_id  # 显式同步 ID，防止意外
+    # print(model.hf_device_map)
     
     """
     .gradient_checkpointing_enable()
@@ -149,14 +163,14 @@ def main():
     # model.config.use_cache = (
     #     False  # silence the warnings. Please re-enable for inference!
     # )
-
+    model = prepare_model_for_kbit_training(model)
     # setup peft
     peft_config = LoraConfig(
         task_type=TaskType.CAUSAL_LM,
         inference_mode=False,
         r=finetune_args.lora_rank,
-        lora_alpha= 32,
-        lora_dropout= 0.05,
+        lora_alpha= finetune_args.lora_alpha,
+        lora_dropout= finetune_args.lora_dropout,
         target_modules = ["q_proj","v_proj"],
     )
     

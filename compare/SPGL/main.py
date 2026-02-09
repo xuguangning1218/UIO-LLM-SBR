@@ -40,9 +40,9 @@ def set_random_seed(seed):
 def main():
     set_random_seed(opt.seed)
     
-    train_data = pickle.load(open('/home/xuguangning/work/UIO-LLM-SBR/datasets/' + opt.dataset + '/train.txt', 'rb'))
-    test_data = pickle.load(open('/home/xuguangning/work/UIO-LLM-SBR/datasets/' + opt.dataset + '/test.txt', 'rb'))
-    all_train = pickle.load(open('/home/xuguangning/work/UIO-LLM-SBR/datasets/' + opt.dataset + '/all_train_seq.txt', 'rb'))
+    train_data = pickle.load(open('/home/xuguangning/work/UIO-LLM-SBR/mydatasets/' + opt.dataset + '/train.txt', 'rb'))
+    test_data = pickle.load(open('/home/xuguangning/work/UIO-LLM-SBR/mydatasets/' + opt.dataset + '/test.txt', 'rb'))
+    all_train = pickle.load(open('/home/xuguangning/work/UIO-LLM-SBR/mydatasets/' + opt.dataset + '/all_train_seq.txt', 'rb'))
 
     n_node = {
         "diginetica": 43097,
