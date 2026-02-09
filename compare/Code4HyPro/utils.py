@@ -361,13 +361,33 @@ def get_mrr(pre, truth):
     return mrr
 
 
-def get_hr(recall_items: list, true_items: list):
-    N = len(recall_items)
-    M = len(true_items)
-    if N == 0 or M == 0:
-        return 0
-    hit_num = 0
-    for item in true_items:
-        if item in recall_items:
-            hit_num += 1
-    return hit_num / M
+def get_hr(recall_items: list, true_items: list) -> float:
+    """
+    计算 Hit Ratio (HR)。
+    
+    逻辑参考：np.isin(target, score) -> bool
+    含义：判断真实物品是否出现在预测的推荐列表中。
+
+    Args:
+        recall_items (list of list): 模型预测的 Top-K 物品列表。
+                                     例如: [[pred1, pred2, ...], [...]]
+        true_items (list): 真实的物品标签（Ground Truth）。
+                           可以是标量列表 [target1, target2...] 
+                           也可以是嵌套列表 [[target1], [target2]...]
+
+    Returns:
+        float: Hit Ratio 指标 (0.0 ~ 1.0)。若需百分比请自行 * 100。
+    """
+    hits = []
+    
+    # 使用 zip 同时遍历预测列表和真实标签
+    for preds, true_target in zip(recall_items, true_items):
+        # 核心逻辑：判断 true_target 是否包含在 preds 中
+        # np.isin 返回的是 boolean，在此场景下：
+        # 如果命中(True) -> 1, 未命中(False) -> 0
+        is_hit = np.isin(true_target, preds).any()
+        
+        hits.append(1 if is_hit else 0)
+    
+    # 计算平均值 (参考原代码: np.mean(hit))
+    return np.mean(hits)

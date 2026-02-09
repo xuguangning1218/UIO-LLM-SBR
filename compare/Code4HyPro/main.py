@@ -158,9 +158,9 @@ for epoch in range(opt.epoch):
     recall_10 = get_recall(y_pre_1_all_10, torch.Tensor(test_y).unsqueeze(1) - 1)
     recall_5 = get_recall(y_pre_1_all_5, torch.Tensor(test_y).unsqueeze(1) - 1)
     new_test_y = [x - 1 for x in test_y]
-    hit = get_hr(y_pre_1_all, new_test_y)
-    hit_10 = get_hr(y_pre_1_all_10, new_test_y)
-    hit_5 = get_hr(y_pre_1_all_5, new_test_y)
+    hit = get_hr(y_pre_1_all.detach().cpu().numpy().tolist(), new_test_y)
+    hit_10 = get_hr(y_pre_1_all_10.detach().cpu().numpy().tolist(), new_test_y)
+    hit_5 = get_hr(y_pre_1_all_5.detach().cpu().numpy().tolist(), new_test_y)
     mrr = get_mrr(y_pre_1_all, trans_to_cuda(torch.Tensor(test_y)).long().unsqueeze(1) - 1)
     mrr_10 = get_mrr(y_pre_1_all_10, torch.Tensor(test_y).unsqueeze(1) - 1)
     mrr_5 = get_mrr(y_pre_1_all_5, torch.Tensor(test_y).unsqueeze(1) - 1)

@@ -12,7 +12,7 @@
 # MIG-0bf58d0a-b3c9-59ef-811b-2885c7169709
 # MIG-a0bf155a-639b-5746-92c8-243d8972b5a9
 
-GPUS=(5 6 7)
+GPUS=(0 1)
 
 # 数据集列表
 DATASETS=("diginetica" "retailRocket_DSAN" "Tmall" "Nowplaying")
